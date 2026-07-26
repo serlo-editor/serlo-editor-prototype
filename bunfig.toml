@@ -4,3 +4,6 @@ telemetry = false
 auto = "disable"
 exact = true
 minimumReleaseAge = 259200
+
+[test]
+root = "src"
