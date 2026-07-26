@@ -1,9 +1,9 @@
 import type { Branded } from '../utils/branded'
-import { type Guard, isString } from '../utils/guard'
+import { isString, type TypeGuard } from '../utils/type-guards'
 
 export type Key = Branded<string, 'Key'>
 
-export const isKey = isString as Guard<Key>
+export const isKey = isString as TypeGuard<Key>
 
 export interface KeyGenerator {
   next(): Key

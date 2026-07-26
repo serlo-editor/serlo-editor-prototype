@@ -1,5 +1,5 @@
 import * as S from '../schema'
-import type { Guard } from '../utils/guard'
+import type { TypeGuard } from '../utils/type-guards'
 
 export type NestedNode<S extends S.Schema = S.Schema> = S extends unknown
   ? _NestedNode<S>
@@ -47,6 +47,6 @@ export const isPrimitive = createGuard(S.isPrimitive)
 export const isLeaf = createGuard(S.isLeaf)
 export const isSingleton = createGuard(S.isSingletonSchema)
 
-function createGuard<S extends S.Schema>(schemaGuard: Guard<S>) {
+function createGuard<S extends S.Schema>(schemaGuard: TypeGuard<S>) {
   return (node: NestedNode): node is NestedNode<S> => schemaGuard(node.schema)
 }
