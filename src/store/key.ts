@@ -1,5 +1,5 @@
 import type { Branded } from '../utils/branded'
-import { type TypeGuard, isString } from '../utils/type-guards'
+import { isString, type TypeGuard } from '../utils/type-guards'
 
 export type Key = Branded<string, 'Key'>
 

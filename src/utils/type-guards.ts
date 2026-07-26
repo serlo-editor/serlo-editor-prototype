@@ -16,10 +16,8 @@ export function literal<T extends string | number | boolean>(
   return (value: unknown): value is T => value === expected
 }
 
-export function instanceOf<T>(
-  constructor: new (...args: never[]) => T,
-): TypeGuard<T> {
-  return (value: unknown): value is T => value instanceof constructor
+export function instanceOf<T>(ctor: new (...args: never[]) => T): TypeGuard<T> {
+  return (value: unknown): value is T => value instanceof ctor
 }
 
 export function union<
