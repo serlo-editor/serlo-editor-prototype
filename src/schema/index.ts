@@ -6,7 +6,7 @@ import type { FlatNode } from '../nodes/flat'
 import type { RichTextFeature } from '../rich-text/types'
 import type { EditorStore } from '../store/editor-store'
 import { isKey, type Key } from '../store/key'
-import * as G from '../utils/guard'
+import * as T from '../utils/type-guards'
 import type { JSONValue, OmitTypeInfo, Schema } from './types'
 
 export type { FlatValue, JSONValue, Schema } from './types'
@@ -93,7 +93,7 @@ interface CustomBehavior<S extends Schema = Schema> {
 export function createTruthValue(
   args: FactoryArguments<TruthValueSchema>,
 ): TruthValueSchema {
-  return { kind: 'boolean', isFlatValue: G.isBoolean, ...args }
+  return { kind: 'boolean', isFlatValue: T.isBoolean, ...args }
 }
 
 export function createRichText(
@@ -101,15 +101,15 @@ export function createRichText(
 ): RichTextSchema {
   return {
     kind: 'richText',
-    isFlatValue: G.isNull,
+    isFlatValue: T.isNull,
     ...args,
   }
 }
 
-export function createLiteral<T extends string | number | boolean>(
-  args: FactoryArguments<LiteralSchema<T>>,
-): LiteralSchema<T> {
-  return { kind: 'literal', isFlatValue: G.isLiteral(args.value), ...args }
+export function createLiteral<Value extends string | number | boolean>(
+  args: FactoryArguments<LiteralSchema<Value>>,
+): LiteralSchema<Value> {
+  return { kind: 'literal', isFlatValue: T.literal(args.value), ...args }
 }
 
 export function createWrapper<S extends Schema, J = JSONValue<S>>(
@@ -173,11 +173,11 @@ export const isWrapper = createGuard<WrapperSchema>('wrapper')
 export const isUnion = createGuard<UnionSchema>('union')
 export const isArray = createGuard<ArraySchema>('array')
 export const isObject = createGuard<ObjectSchema>('object')
-export const isPrimitive = G.isUnion(isTruthValue, isLiteral)
-export const isLeaf = G.isUnion(isTruthValue, isLiteral, isRichText)
-export const isSingletonSchema = G.isUnion(isWrapper, isUnion)
+export const isPrimitive = T.union(isTruthValue, isLiteral)
+export const isLeaf = T.union(isTruthValue, isLiteral, isRichText)
+export const isSingletonSchema = T.union(isWrapper, isUnion)
 
-function createGuard<S extends Schema>(kind: S['kind']): G.Guard<S> {
+function createGuard<S extends Schema>(kind: S['kind']): T.TypeGuard<S> {
   return (value: unknown): value is S => {
     return (
       typeof value === 'object' &&

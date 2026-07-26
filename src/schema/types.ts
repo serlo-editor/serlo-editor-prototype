@@ -1,9 +1,9 @@
-import type { Guard } from '../utils/guard'
+import type { TypeGuard as T } from '../utils/type-guards'
 
 export interface Schema<K extends SchemaKind = SchemaKind> {
   kind: K['kind']
   name: string
-  isFlatValue: Guard<K['FlatValue']>
+  isFlatValue: T<K['FlatValue']>
   [TypeInfo]?: {
     FlatValue: K['FlatValue']
     JSONValue: K['JSONValue']
