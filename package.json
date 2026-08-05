@@ -12,7 +12,8 @@
     "dev": "bun --watch src/index.html",
     "format": "biome format --write",
     "preview": "bun run build && bun dist/index.html",
-    "test:e2e": "./scripts/e2e-tests"
+    "test:e2e": "./scripts/e2e-tests",
+    "test:unit": "bun test"
   },
   "dependencies": {
     "clsx": "2.1.1",
@@ -28,6 +29,7 @@
     "@biomejs/biome": "2.4.15",
     "@playwright/test": "1.60.0",
     "@tsconfig/bun": "1.0.10",
+    "@types/bun": "1.3.14",
     "@types/react-dom": "19.2.3",
     "typescript": "7.0.2"
   }

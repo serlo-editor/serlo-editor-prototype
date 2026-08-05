@@ -46,6 +46,13 @@ jobs:
       - uses: ./.github/actions/setup-bun
       - run: bun run check:format
 
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup-bun
+      - run: bun run test:unit
+
   tsc:
     runs-on: ubuntu-latest
     steps:
