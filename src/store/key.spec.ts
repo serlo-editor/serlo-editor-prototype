@@ -1,5 +1,19 @@
-import { describe, expect, test } from 'bun:test'
-import { CollaborativeKeyGenerator } from './key'
+import { describe, expect, expectTypeOf, test } from 'bun:test'
+import { CollaborativeKeyGenerator, type Key } from './key'
+
+describe('Key type', () => {
+  test('is a branded type of string (a string cannot be used as a key)', () => {
+    // @ts-expect-error
+    expectTypeOf('a string').toEqualTypeOf<Key>()
+  })
+
+  test('can be used as a string', () => {
+    const firstLetter = (str: string) => str.substring(0, 1)
+    const key = 'key' as Key
+
+    expect(firstLetter(key)).toBe('k')
+  })
+})
 
 describe('CollaborativeKeyGenerator', () => {
   test('includes the client id in every key', () => {
