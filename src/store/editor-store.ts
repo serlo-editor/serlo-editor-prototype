@@ -8,7 +8,7 @@ import { createRichTextEditor } from '../rich-text/create-editor'
 import type { FlatValue, RichTextSchema, Schema } from '../schema'
 import { collectSchemas } from '../schema/collect-schemas'
 import type { EditorSelection } from '../selection/types'
-import { type Key, type KeyGenerator, PrefixKeyGenerator } from './key'
+import { CollaborativeKeyGenerator, type Key, type KeyGenerator } from './key'
 
 export class EditorStore {
   private schemaNames: Y.Map<string>
@@ -20,14 +20,19 @@ export class EditorStore {
   private editors = new Map<Key, Editor | undefined>()
   private _selection: EditorSelection | null = null
 
+  private readonly keyGenerator: KeyGenerator
+
   constructor(
     public readonly cdrt: CDRT,
-    private readonly keyGenerator: KeyGenerator = new PrefixKeyGenerator('n'),
+    keyGenerator?: KeyGenerator,
   ) {
     this.schemaNames = this.cdrt.doc.getMap('schemaNames')
     this.parentKeys = this.cdrt.doc.getMap('parentKeys')
     this.values = this.cdrt.doc.getMap('values')
     this.metadata = this.cdrt.doc.getMap('metadata')
+    this.keyGenerator =
+      keyGenerator ??
+      new CollaborativeKeyGenerator(String(this.cdrt.doc.clientID))
   }
 
   addUpdateListener(listener: () => void) {
