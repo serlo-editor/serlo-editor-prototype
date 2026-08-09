@@ -1,3 +1,5 @@
+import type { Transaction } from '../store/editor-store'
+import type { Key } from '../store/key'
 import type { TypeGuard } from '../utils/type-guards'
 
 // Use a single SchemaKind parameter so each Schema<> instantiation keeps
@@ -16,6 +18,17 @@ export interface Schema<K extends SchemaKind = SchemaKind> {
     readonly FlatValue: K['FlatValue']
     readonly JSONValue: K['JSONValue']
   }
+
+  behavior?: Behavior<K>
+}
+
+interface Behavior<S extends Schema> {
+  save(args: { tx: Transaction; parentKey: Key; node: NestedNode<S> }): Key
+}
+
+export interface NestedNode<S extends Schema> {
+  schema: S
+  value: JSONValue<S>
 }
 
 export type FlatValue<S extends Schema> = SchemaTypeInfoOf<S>['FlatValue']
