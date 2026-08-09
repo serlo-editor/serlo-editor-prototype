@@ -1,21 +1,29 @@
-import type { TypeGuard as T } from '../utils/type-guards'
+import type { TypeGuard } from '../utils/type-guards'
 
+// Use a single SchemaKind parameter so each Schema<> instantiation keeps
+// FlatValue and JSONValue paired.
 export interface Schema<K extends SchemaKind = SchemaKind> {
   kind: K['kind']
   name: string
-  isFlatValue: T<K['FlatValue']>
-  [TypeInfo]?: {
-    FlatValue: K['FlatValue']
-    JSONValue: K['JSONValue']
+  isFlatValue: TypeGuard<K['FlatValue']>
+  // Store the current FlatValue and JSONValue on each Schema instance.
+  // Otherwise the derived FlatValue and JSONValue types can be inferred
+  // incorrectly.
+  //
+  // We use a unique, non-exported symbol so the SchemaTypeInfo property is
+  // not accessible outside this module.
+  readonly [SchemaTypeInfo]?: {
+    readonly FlatValue: K['FlatValue']
+    readonly JSONValue: K['JSONValue']
   }
 }
 
-export type FlatValue<S extends Schema> = TypeInfo<S>['FlatValue']
-export type JSONValue<S extends Schema> = TypeInfo<S>['JSONValue']
+export type FlatValue<S extends Schema> = SchemaTypeInfoOf<S>['FlatValue']
+export type JSONValue<S extends Schema> = SchemaTypeInfoOf<S>['JSONValue']
 
-export type OmitTypeInfo<S extends Schema> = Omit<S, typeof TypeInfo>
+export type PublicSchemaShape<S extends Schema> = Omit<S, typeof SchemaTypeInfo>
 
-type TypeInfo<S extends Schema> = NonNullable<S[typeof TypeInfo]>
+type SchemaTypeInfoOf<S extends Schema> = NonNullable<S[typeof SchemaTypeInfo]>
 
 interface SchemaKind {
   kind: string
@@ -23,4 +31,4 @@ interface SchemaKind {
   JSONValue: unknown
 }
 
-declare const TypeInfo: unique symbol
+declare const SchemaTypeInfo: unique symbol

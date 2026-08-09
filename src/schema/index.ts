@@ -7,7 +7,7 @@ import type { RichTextFeature } from '../rich-text/types'
 import type { EditorStore } from '../store/editor-store'
 import { isKey, type Key } from '../store/key'
 import * as T from '../utils/type-guards'
-import type { JSONValue, OmitTypeInfo, Schema } from './types'
+import type { JSONValue, PublicSchemaShape, Schema } from './types'
 
 export type { FlatValue, JSONValue, Schema } from './types'
 
@@ -156,7 +156,7 @@ export function createObject<Props extends Record<string, Schema>>(
 }
 
 type FactoryArguments<S extends Schema> = Omit<
-  OmitTypeInfo<S>,
+  PublicSchemaShape<S>,
   'kind' | 'isFlatValue'
 > & { customBehavior?: CustomBehavior<S> }
 
