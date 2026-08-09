@@ -23,8 +23,6 @@ export type JSONValue<S extends Schema> = SchemaTypeInfoOf<S>['JSONValue']
 
 export type PublicSchemaShape<S extends Schema> = Omit<S, typeof SchemaTypeInfo>
 
-export type OmitTypeInfo<S extends Schema> = PublicSchemaShape<S>
-
 type SchemaTypeInfoOf<S extends Schema> = NonNullable<S[typeof SchemaTypeInfo]>
 
 interface SchemaKind {
