@@ -1,5 +1,5 @@
 import { expect, type Page } from 'playwright/test'
-import { EditorName } from '../src/cdrt/types'
+type EditorName = 'Editor 1' | 'Editor 2'
 
 export async function loadPrototype(page: Page) {
   await page.goto('http://localhost:3000')
@@ -102,8 +102,8 @@ export async function selectTextInEditor(
 }
 
 export async function expectTextVisibleInBothEditors(page: Page, text: string) {
-  await expect(editor(page, EditorName.Editor1).getByText(text)).toBeVisible()
-  await expect(editor(page, EditorName.Editor2).getByText(text)).toBeVisible()
+  await expect(editor(page, 'Editor 1').getByText(text)).toBeVisible()
+  await expect(editor(page, 'Editor 2').getByText(text)).toBeVisible()
 }
 
 export async function expectFormattedText(
