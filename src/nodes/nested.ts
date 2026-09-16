@@ -36,7 +36,7 @@ export function getProperty<
   >
 }
 
-export const isTruthValue = createGuard(S.isTruthValue)
+export const isBoolean = createGuard(S.isBoolean)
 export const isRichText = createGuard(S.isRichText)
 export const isLiteral = createGuard(S.isLiteral)
 export const isWrapper = createGuard(S.isWrapper)

@@ -34,8 +34,8 @@ Used to define schema-level flat-value validators and schema combinators:
 - `G.isBoolean` for boolean schema flat values
 - `G.isNull` for rich-text schema flat values
 - `G.isLiteral(args.value)` for literal schema flat values
-- `G.isUnion(isTruthValue, isLiteral)` for `isPrimitive`
-- `G.isUnion(isTruthValue, isLiteral, isRichText)` for `isLeaf`
+- `G.isUnion(isBoolean, isLiteral)` for `isPrimitive`
+- `G.isUnion(isBoolean, isLiteral, isRichText)` for `isLeaf`
 - `G.isUnion(isWrapper, isUnion)` for `isSingletonSchema`
 
 ### `src/store/key.ts`
