@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import { type CommandAction, type Editor, isMarkActive } from 'prosekit/core'
-import * as F from './nodes/flat'
-import type { EditorStore } from './store/editor-store'
+import * as F from '../nodes/flat'
+import type { EditorStore } from '../store/editor-store'
 
 export function Toolbar({ store }: { store: EditorStore }) {
   const editor = getFocusedEditor(store)

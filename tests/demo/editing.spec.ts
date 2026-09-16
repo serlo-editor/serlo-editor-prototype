@@ -1,5 +1,4 @@
 import { expect, test } from '@playwright/test'
-import { EditorName } from '../src/cdrt/types'
 import {
   clickText,
   clickTextAndMoveToEnd,
@@ -20,7 +19,7 @@ test('typing in a normal text block syncs to the other editor', async ({
 }) => {
   await loadPrototype(page)
 
-  await clickTextAndMoveToEnd(page, EditorName.Editor1, normalParagraph)
+  await clickTextAndMoveToEnd(page, 'Editor 1', normalParagraph)
   await page.keyboard.type(' Hello World')
 
   await expectTextVisibleInBothEditors(page, 'Hello World')
@@ -31,7 +30,7 @@ test('editing multiple-choice question text syncs to the other editor', async ({
 }) => {
   await loadPrototype(page)
 
-  await selectTextInEditor(page, EditorName.Editor1, 'What is 2 + 2?')
+  await selectTextInEditor(page, 'Editor 1', 'What is 2 + 2?')
   await page.keyboard.type('What is 2 + 3?')
 
   await expectTextVisibleInBothEditors(page, 'What is 2 + 3?')
@@ -47,23 +46,23 @@ for (const { button, tag } of [
     const typedText = 'formatted text'
     await loadPrototype(page)
 
-    await clickTextAndMoveToEnd(page, EditorName.Editor1, normalParagraph)
-    await clickToolbarButton(page, EditorName.Editor1, button)
+    await clickTextAndMoveToEnd(page, 'Editor 1', normalParagraph)
+    await clickToolbarButton(page, 'Editor 1', button)
     await page.keyboard.type(typedText)
 
-    await expectFormattedText(page, EditorName.Editor1, typedText, tag)
-    await expectFormattedText(page, EditorName.Editor2, typedText, tag)
+    await expectFormattedText(page, 'Editor 1', typedText, tag)
+    await expectFormattedText(page, 'Editor 2', typedText, tag)
   })
 
   test(`${button.toLowerCase()} applies to selected text`, async ({ page }) => {
     await loadPrototype(page)
 
-    await selectTextInEditor(page, EditorName.Editor1, normalParagraph)
-    await expect(toolbarButton(page, EditorName.Editor1, button)).toBeEnabled()
-    await clickToolbarButton(page, EditorName.Editor1, button)
+    await selectTextInEditor(page, 'Editor 1', normalParagraph)
+    await expect(toolbarButton(page, 'Editor 1', button)).toBeEnabled()
+    await clickToolbarButton(page, 'Editor 1', button)
 
-    await expectFormattedText(page, EditorName.Editor1, normalParagraph, tag)
-    await expectFormattedText(page, EditorName.Editor2, normalParagraph, tag)
+    await expectFormattedText(page, 'Editor 1', normalParagraph, tag)
+    await expectFormattedText(page, 'Editor 2', normalParagraph, tag)
   })
 }
 
@@ -72,19 +71,19 @@ test('gap button is only available in the fill-in-the-blank exercise', async ({
 }) => {
   await loadPrototype(page)
 
-  await clickText(page, EditorName.Editor1, normalParagraph)
-  await expect(toolbarButton(page, EditorName.Editor1, 'Gap')).not.toBeVisible()
+  await clickText(page, 'Editor 1', normalParagraph)
+  await expect(toolbarButton(page, 'Editor 1', 'Gap')).not.toBeVisible()
 
-  await clickText(page, EditorName.Editor1, 'France')
-  await expect(toolbarButton(page, EditorName.Editor1, 'Gap')).toBeVisible()
+  await clickText(page, 'Editor 1', 'France')
+  await expect(toolbarButton(page, 'Editor 1', 'Gap')).toBeVisible()
 })
 
 test('gap formatting can be toggled on selected text', async ({ page }) => {
   await loadPrototype(page)
 
-  await selectTextInEditor(page, EditorName.Editor1, 'France')
-  await clickToolbarButton(page, EditorName.Editor1, 'Gap')
+  await selectTextInEditor(page, 'Editor 1', 'France')
+  await clickToolbarButton(page, 'Editor 1', 'Gap')
 
-  await expectGapText(page, EditorName.Editor1, 'France')
-  await expectGapText(page, EditorName.Editor2, 'France')
+  await expectGapText(page, 'Editor 1', 'France')
+  await expectGapText(page, 'Editor 2', 'France')
 })

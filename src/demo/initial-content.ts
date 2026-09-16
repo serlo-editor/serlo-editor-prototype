@@ -1,6 +1,4 @@
-import type { JSONValue } from '../schema'
-import type { Root } from './index'
-import { ContentType } from './types'
+import { ContentType, type JSONValue, type Root } from '../editor'
 
 export const initialContent: JSONValue<Root> = [
   {

@@ -3,7 +3,7 @@ import {
   encodeAwarenessUpdate,
 } from 'y-protocols/awareness.js'
 import * as Y from 'yjs'
-import type { CDRT } from './types'
+import type { CDRT } from '../editor'
 
 export function syncCDRTs(cdrt1: CDRT, cdrt2: CDRT) {
   const { doc: doc1, awareness: awareness1 } = cdrt1
