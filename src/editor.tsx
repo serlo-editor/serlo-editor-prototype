@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 import type { CDRT } from './cdrt/types'
 import { Root } from './content'
 import { DebugPanel } from './debug-panel'
+import * as F from './nodes/flat'
 import type { FlatNode } from './nodes/flat'
 import { load } from './operations/load'
 import { render } from './operations/render'
@@ -76,8 +77,13 @@ export function EditorDebugPanel({ cdrt }: { cdrt: CDRT }) {
           return JSON.stringify(jsonValue, null, 2)
         },
         entries: () => {
-          const stringifyEntry = ([key, entry]: [string, FlatNode]) =>
-            `${padStart(key, 4)}: ${JSON.stringify(entry.value)}`
+          const stringifyEntry = ([key, entry]: [string, FlatNode]) => {
+            const value = F.isRichText(entry)
+              ? store.getEditor(entry).state.doc.toJSON()
+              : entry.value
+
+            return `${padStart(key, 4)}: ${JSON.stringify(value)}`
+          }
 
           const lines = store.getEntries().map(stringifyEntry)
 
