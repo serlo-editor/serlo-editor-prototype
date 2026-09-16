@@ -3,7 +3,7 @@ import { RichTextFeature } from '../rich-text/types'
 import * as S from '../schema'
 import { ContentType } from './types'
 
-const TruthValue = S.createTruthValue({ name: 'TruthValue' })
+const BooleanSchema = S.createBoolean({ name: 'Boolean' })
 
 const InlineRichText = S.createRichText({
   name: 'InlineRichText',
@@ -71,7 +71,7 @@ const MultipleChoiceExercise = S.createObject({
       itemSchema: S.createObject({
         name: 'MultipleChoiceOption',
         properties: {
-          isCorrect: TruthValue,
+          isCorrect: BooleanSchema,
           text: InlineRichText,
         },
         keyOrder: ['isCorrect', 'text'],

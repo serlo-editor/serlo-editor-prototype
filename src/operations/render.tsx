@@ -20,7 +20,7 @@ export function render(args: {
     })
   } else if (F.isLiteral(node)) {
     return String(node.value)
-  } else if (F.isTruthValue(node)) {
+  } else if (F.isBoolean(node)) {
     return (
       <input
         key={node.key}

@@ -11,7 +11,7 @@ import type { JSONValue, PublicSchemaShape, Schema } from './types'
 
 export type { FlatValue, JSONValue, Schema } from './types'
 
-export interface TruthValueSchema
+export interface BooleanSchema
   extends Schema<{
     kind: 'boolean'
     FlatValue: boolean
@@ -90,9 +90,9 @@ interface CustomBehavior<S extends Schema = Schema> {
   }) => ReactNode
 }
 
-export function createTruthValue(
-  args: FactoryArguments<TruthValueSchema>,
-): TruthValueSchema {
+export function createBoolean(
+  args: FactoryArguments<BooleanSchema>,
+): BooleanSchema {
   return { kind: 'boolean', isFlatValue: T.isBoolean, ...args }
 }
 
@@ -166,15 +166,15 @@ export const hasCustomBehavior = (
   return 'customBehavior' in schema && schema.customBehavior !== undefined
 }
 
-export const isTruthValue = createGuard<TruthValueSchema>('boolean')
+export const isBoolean = createGuard<BooleanSchema>('boolean')
 export const isRichText = createGuard<RichTextSchema>('richText')
 export const isLiteral = createGuard<LiteralSchema>('literal')
 export const isWrapper = createGuard<WrapperSchema>('wrapper')
 export const isUnion = createGuard<UnionSchema>('union')
 export const isArray = createGuard<ArraySchema>('array')
 export const isObject = createGuard<ObjectSchema>('object')
-export const isPrimitive = T.union(isTruthValue, isLiteral)
-export const isLeaf = T.union(isTruthValue, isLiteral, isRichText)
+export const isPrimitive = T.union(isBoolean, isLiteral)
+export const isLeaf = T.union(isBoolean, isLiteral, isRichText)
 export const isSingletonSchema = T.union(isWrapper, isUnion)
 
 function createGuard<S extends Schema>(kind: S['kind']): T.TypeGuard<S> {
