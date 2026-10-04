@@ -1,12 +1,13 @@
-import { useEffect } from 'react'
-import { Editor, useCDRT } from '../editor'
-import { EditorDebugPanel } from './DebugPanel'
-import { initialContent } from './initial-content'
-import { syncCDRTs } from './sync-cdrts'
+import { useEffect } from "react"
+
+import { Editor, useCDRT } from "../editor"
+import { EditorDebugPanel } from "./DebugPanel"
+import { initialContent } from "./initial-content"
+import { syncCDRTs } from "./sync-cdrts"
 
 export default function App() {
-  const cdrt1 = useCDRT({ name: 'Editor 1', color: '#2563eb' })
-  const cdrt2 = useCDRT({ name: 'Editor 2', color: '#b45309' })
+  const cdrt1 = useCDRT({ name: "Editor 1", color: "#2563eb" })
+  const cdrt2 = useCDRT({ name: "Editor 2", color: "#b45309" })
 
   useEffect(() => syncCDRTs(cdrt1, cdrt2), [cdrt1, cdrt2])
 

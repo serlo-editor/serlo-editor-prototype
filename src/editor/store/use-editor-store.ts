@@ -1,6 +1,7 @@
-import { useRef, useSyncExternalStore } from 'react'
-import type { CDRT } from '../cdrt/types'
-import { EditorStore } from './editor-store'
+import { useRef, useSyncExternalStore } from "react"
+
+import type { CDRT } from "../cdrt/types"
+import { EditorStore } from "./editor-store"
 
 const stores = new WeakMap<CDRT, EditorStore>()
 

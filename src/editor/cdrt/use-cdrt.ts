@@ -1,7 +1,8 @@
-import { useMemo } from 'react'
-import { Awareness } from 'y-protocols/awareness'
-import { Doc } from 'yjs'
-import type { CDRT } from './types'
+import { useMemo } from "react"
+import { Awareness } from "y-protocols/awareness"
+import { Doc } from "yjs"
+
+import type { CDRT } from "./types"
 
 export interface CDRTOptions {
   name: string
@@ -13,7 +14,7 @@ export function useCDRT({ name, color }: CDRTOptions): CDRT {
     const doc = new Doc()
     const awareness = new Awareness(doc)
 
-    awareness.setLocalStateField('user', { name, color })
+    awareness.setLocalStateField("user", { name, color })
 
     return { name, doc, awareness, color }
   }, [name, color])

@@ -1,4 +1,4 @@
-import type { Key } from '../store/key'
+import type { Key } from "../store/key"
 
 export interface EditorSelection {
   key: Key

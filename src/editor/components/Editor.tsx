@@ -1,15 +1,16 @@
-import type { CSSProperties } from 'react'
-import { useEffect } from 'react'
-import type { CDRT } from '../cdrt/types'
-import { Root } from '../content'
-import { render } from '../operations/render'
-import { saveRoot } from '../operations/save'
-import type { JSONValue } from '../schema'
-import type { Key } from '../store/key'
-import { useEditorStore } from '../store/use-editor-store'
-import { Toolbar } from './Toolbar'
+import type { CSSProperties } from "react"
+import { useEffect } from "react"
 
-const ROOT_KEY = 'root' as Key
+import type { CDRT } from "../cdrt/types"
+import { Root } from "../content"
+import { render } from "../operations/render"
+import { saveRoot } from "../operations/save"
+import type { JSONValue } from "../schema"
+import type { Key } from "../store/key"
+import { useEditorStore } from "../store/use-editor-store"
+import { Toolbar } from "./Toolbar"
+
+const ROOT_KEY = "root" as Key
 
 interface EditorProps {
   cdrt: CDRT
@@ -34,9 +35,9 @@ export function Editor({ cdrt, initialContent }: EditorProps) {
       <h2 className="editor-card__title">
         <span
           className="editor-card__accent"
-          style={{ '--accent-color': cdrt.color } as CSSProperties}
+          style={{ "--accent-color": cdrt.color } as CSSProperties}
           aria-hidden="true"
-        />{' '}
+        />{" "}
         {cdrt.name}
       </h2>
 
@@ -44,9 +45,7 @@ export function Editor({ cdrt, initialContent }: EditorProps) {
         <div className="editor-toolbar-shell">
           <Toolbar store={store} />
         </div>
-        {store.has(ROOT_KEY)
-          ? render({ store, node: store.get(ROOT_KEY) })
-          : 'Loading...'}
+        {store.has(ROOT_KEY) ? render({ store, node: store.get(ROOT_KEY) }) : "Loading..."}
       </section>
     </form>
   )

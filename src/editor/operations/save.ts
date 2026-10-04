@@ -1,28 +1,18 @@
-import * as Y from 'yjs'
-import type { Root } from '../content'
-import * as N from '../nodes/nested'
-import { createRichTextEditor } from '../rich-text/create-editor'
-import type { Transaction } from '../store/editor-store'
-import type { Key } from '../store/key'
+import * as Y from "yjs"
 
-export function saveRoot(args: {
-  tx: Transaction
-  node: N.NestedNode<Root>
-  rootKey: Key
-}): Key {
+import type { Root } from "../content"
+import * as N from "../nodes/nested"
+import { createRichTextEditor } from "../rich-text/create-editor"
+import type { Transaction } from "../store/editor-store"
+import type { Key } from "../store/key"
+
+export function saveRoot(args: { tx: Transaction; node: N.NestedNode<Root>; rootKey: Key }): Key {
   const { tx, node, rootKey } = args
 
-  return tx.attachRoot(
-    rootKey,
-    save({ tx, parentKey: rootKey, node: N.getSingletonChild(node) }),
-  )
+  return tx.attachRoot(rootKey, save({ tx, parentKey: rootKey, node: N.getSingletonChild(node) }))
 }
 
-export function save(args: {
-  tx: Transaction
-  parentKey: Key
-  node: N.NestedNode
-}): Key {
+export function save(args: { tx: Transaction; parentKey: Key; node: N.NestedNode }): Key {
   const { tx, parentKey, node } = args
 
   if (N.isPrimitive(node)) {
@@ -48,11 +38,7 @@ export function save(args: {
     return tx.insert(node.schema, parentKey, (key) => {
       const list = new Y.Array<Key>()
 
-      list.push(
-        N.getItems(node).map((itemNode) =>
-          save({ tx, parentKey: key, node: itemNode }),
-        ),
-      )
+      list.push(N.getItems(node).map((itemNode) => save({ tx, parentKey: key, node: itemNode })))
 
       return list
     })

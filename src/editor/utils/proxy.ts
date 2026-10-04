@@ -4,7 +4,7 @@ export function createProxyWithChangedMethods<A extends object>(
 ): A {
   return new Proxy(target, {
     get(target, prop, receiver) {
-      return typeof prop === 'string' && prop in methods
+      return typeof prop === "string" && prop in methods
         ? methods[prop]
         : Reflect.get(target, prop, receiver)
     },
