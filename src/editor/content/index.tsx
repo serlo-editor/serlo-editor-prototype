@@ -1,3 +1,4 @@
+import { ExerciseBadge } from "../components/ExerciseBadge"
 import * as F from "../nodes/flat"
 import { RichTextFeature } from "../rich-text/types"
 import * as S from "../schema"
@@ -48,9 +49,10 @@ const FillInTheBlankExercise = S.createWrapper({
       const content = F.getSingletonChild({ node, store })
       return (
         <div key={node.key} className="exercise exercise--fill-blank">
-          <p>
-            <strong>Fill in the Blank Exercise: </strong>
-          </p>
+          <ExerciseBadge
+            label="Lückentext"
+            help="Markiere Wörter als Lücken mit der Gap-Funktion."
+          />
           {renderChild(content)}
         </div>
       )
@@ -76,6 +78,24 @@ const MultipleChoiceExercise = S.createObject({
         },
         keyOrder: ["isCorrect", "text"],
         htmlTag: "li",
+        customBehavior: {
+          render: ({ node, store, renderChild }) => {
+            const text = F.getProperty({ node, store, propertyName: "text" })
+            const isCorrect = F.getProperty({ node, store, propertyName: "isCorrect" })
+
+            return (
+              <li key={node.key}>
+                <div className="answer-input">{renderChild(text)}</div>
+                <label
+                  className={isCorrect.value ? "correctness correctness--correct" : "correctness"}
+                >
+                  {renderChild(isCorrect)}
+                  {isCorrect.value ? "Richtig" : "Falsch"}
+                </label>
+              </li>
+            )
+          },
+        },
       }),
       htmlTag: "ul",
       className: "multiple-choice-options",
@@ -89,9 +109,10 @@ const MultipleChoiceExercise = S.createObject({
 
       return (
         <div key={node.key} className="exercise exercise--multiple-choice">
-          <p>
-            <strong>Multiple Choice Exercise: </strong> {renderChild(question)}
-          </p>
+          <ExerciseBadge label="Multiple Choice" help="Mehrere Antworten können richtig sein." />
+          <h3 className="exercise__field-label">Aufgabenstellung</h3>
+          <div className="answer-input exercise__question">{renderChild(question)}</div>
+          <h3 className="exercise__field-label">Antworten</h3>
           {renderChild(options)}
         </div>
       )

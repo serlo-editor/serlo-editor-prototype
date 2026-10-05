@@ -1,11 +1,14 @@
 import { expect, type Page } from "playwright/test"
 type EditorName = "Editor 1" | "Editor 2"
 
-export async function loadPrototype(page: Page) {
+export async function loadPrototype(page: Page, { collaboration = true } = {}) {
   await page.goto("http://localhost:3000")
 
   // Wait for the editor to load
   await page.waitForSelector(".ProseMirror")
+  if (collaboration) {
+    await page.getByText("Zusammenarbeit testen", { exact: true }).click()
+  }
 }
 
 export function editor(page: Page, editorName: EditorName) {
