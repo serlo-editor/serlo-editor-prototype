@@ -16,40 +16,9 @@ export default function App() {
 
   return (
     <main className="app">
-      <h1 className="visually-hidden">Editor für Lerninhalte</h1>
-      <div className="app__workspace">
-        <section className="app__authoring" aria-label="Inhalt bearbeiten">
-          <Editor cdrt={cdrt1} initialContent={initialContent} />
-        </section>
-
-        <section
-          className={`app__preview${rightPane === "collaboration" ? " app__preview--collaboration" : ""}`}
-          aria-labelledby="right-pane-heading"
-        >
-          <header className="app__preview-header">
-            <h2 id="right-pane-heading">
-              {rightPane === "preview" ? "Vorschau" : "Zusammenarbeit"}
-            </h2>
-            {rightPane === "preview" && (
-              <button
-                type="button"
-                className="app__reset"
-                aria-label="Vorschau zurücksetzen"
-                title="Vorschau zurücksetzen"
-                onClick={() => resetPreview((version) => version + 1)}
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.8"
-                  aria-hidden="true"
-                >
-                  <path d="M4 4v6h6M4.5 9a8 8 0 1 1-.2 6" />
-                </svg>
-              </button>
-            )}
-          </header>
+      <header className="app__header">
+        <h1>Editor für Lerninhalte</h1>
+        <div className="app__header-controls">
           <div className="app__view-switch" role="group" aria-label="Ansicht im rechten Bereich">
             <button
               type="button"
@@ -68,6 +37,38 @@ export default function App() {
               Zusammenarbeit
             </button>
           </div>
+          {rightPane === "preview" && (
+            <button
+              type="button"
+              className="app__reset"
+              aria-label="Vorschau zurücksetzen"
+              title="Vorschau zurücksetzen"
+              onClick={() => resetPreview((version) => version + 1)}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                aria-hidden="true"
+              >
+                <path d="M4 4v6h6M4.5 9a8 8 0 1 1-.2 6" />
+              </svg>
+            </button>
+          )}
+        </div>
+      </header>
+
+      <div className="app__workspace">
+        <section className="app__authoring" aria-label="Inhalt bearbeiten">
+          <Editor cdrt={cdrt1} initialContent={initialContent} />
+        </section>
+
+        <section
+          className={`app__preview${rightPane === "collaboration" ? " app__preview--collaboration" : ""}`}
+          aria-label={rightPane === "preview" ? "Vorschau" : "Zusammenarbeit"}
+        >
+          {rightPane === "preview" && <h2 className="app__preview-title">Vorschau</h2>}
           <div id="right-pane-preview" className="app__device" hidden={rightPane !== "preview"}>
             <Preview key={previewVersion} cdrt={cdrt1} />
           </div>
