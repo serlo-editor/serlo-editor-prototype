@@ -33,7 +33,7 @@ Reference: [Split view](split-view.png).
 
 This behavior extends screenshot reference; it is not shown in screenshot.
 
-- Shared demo header spans both panes and contains `Vorschau` / `Zusammenarbeit` switch; preview is default. Preview reset sits beside switch and appears only in preview mode.
+- Shared demo header spans both panes and contains `Vorschau` / `Zusammenarbeit` switch; preview is default. Preview reset sits inside preview pane beside its heading and appears only in preview mode.
 - Both collaborative editor panes use same construction and padding, with aligned editor titles, formatting toolbars, and content start. No mode controls or extra heading offset Editor 2 inside right pane.
 - Collaboration mode shows editable Editor 2 in same pane, synchronized with left editor, including collaborative cursors. It has no phone frame or preview reset control.
 - Switching modes preserves both editors and learner response state. Preview reset remains exclusive to preview mode and does not change authored content.

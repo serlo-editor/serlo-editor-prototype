@@ -67,7 +67,12 @@ test("right pane switches between preview and collaborative editor without losin
   const collaborationButton = page.getByRole("button", { name: "Zusammenarbeit", exact: true })
   const header = page.locator(".app__header")
   await expect(header.getByRole("group", { name: "Ansicht im rechten Bereich" })).toBeVisible()
-  await expect(header.getByRole("button", { name: "Vorschau zurücksetzen" })).toBeVisible()
+  await expect(header.getByRole("button", { name: "Vorschau zurücksetzen" })).toHaveCount(0)
+  await expect(
+    page
+      .getByRole("region", { name: "Vorschau", exact: true })
+      .getByRole("button", { name: "Vorschau zurücksetzen" }),
+  ).toBeVisible()
 
   await blank.fill("Lyon")
   await answer.check()
