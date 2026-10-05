@@ -30,7 +30,10 @@ test("learner preview hides answers and authoring controls; reset keeps authored
   await expect(answers.nth(0)).toBeChecked()
   await expect(answers.nth(1)).toBeChecked()
 
-  await page.getByRole("button", { name: "Vorschau zurücksetzen" }).click()
+  await page
+    .getByRole("region", { name: "Vorschau", exact: true })
+    .getByRole("button", { name: "Vorschau zurücksetzen" })
+    .click()
   await expect(blank).toHaveValue("")
   for (const answer of await answers.all()) await expect(answer).not.toBeChecked()
   await expect(preview).toContainText("Live update")
@@ -107,7 +110,9 @@ test("right pane switches between preview and collaborative editor without losin
   await expect(answer).toBeChecked()
 })
 
-test("narrow layout contains preview and preserves keyboard access", async ({ page }) => {
+test("narrow layout preserves keyboard access and learner answers across mode switches", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 375, height: 812 })
   await loadPrototype(page, { collaboration: false })
   const preview = page.getByLabel("Lernvorschau")
@@ -117,11 +122,30 @@ test("narrow layout contains preview and preserves keyboard access", async ({ pa
   await expect(blank).toHaveValue("Paris")
   await page.keyboard.press("Tab")
   await page.keyboard.press("Space")
-  await expect(preview.getByRole("checkbox").first()).toBeChecked()
-  await page.getByRole("button", { name: "Zusammenarbeit", exact: true }).click()
-  await expect(editor(page, "Editor 2")).toBeVisible()
-  await expect(preview).not.toBeVisible()
+  const answer = preview.getByRole("checkbox").first()
+  await expect(answer).toBeChecked()
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   )
+  await page.getByRole("button", { name: "Zusammenarbeit", exact: true }).click()
+  await expect(editor(page, "Editor 2")).toBeVisible()
+  await expect(preview).not.toBeVisible()
+  await expect(page.getByRole("button", { name: "Vorschau zurücksetzen" })).toHaveCount(0)
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  )
+
+  await page.getByRole("button", { name: "Vorschau", exact: true }).click()
+  await expect(blank).toHaveValue("Paris")
+  await expect(answer).toBeChecked()
+  const reset = page
+    .getByRole("region", { name: "Vorschau", exact: true })
+    .getByRole("button", { name: "Vorschau zurücksetzen" })
+  await expect(
+    page.locator(".app__header").getByRole("button", { name: "Vorschau zurücksetzen" }),
+  ).toHaveCount(0)
+  await reset.click()
+  await expect(blank).toHaveValue("")
+  await expect(answer).not.toBeChecked()
+  await expect(editor(page, "Editor 1").locator(".gap-mark")).toHaveText("Paris")
 })

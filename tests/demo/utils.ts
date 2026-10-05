@@ -4,10 +4,13 @@ type EditorName = "Editor 1" | "Editor 2"
 export async function loadPrototype(page: Page, { collaboration = true } = {}) {
   await page.goto("http://localhost:3000")
 
-  // Wait for the editor to load
-  await page.waitForSelector(".ProseMirror")
+  await expect(editor(page, "Editor 1").locator(".ProseMirror").first()).toBeVisible()
   if (collaboration) {
-    await page.getByRole("button", { name: "Zusammenarbeit", exact: true }).click()
+    await page
+      .locator(".app__header")
+      .getByRole("button", { name: "Zusammenarbeit", exact: true })
+      .click()
+    await expect(editor(page, "Editor 2").locator(".ProseMirror").first()).toBeVisible()
   }
 }
 
