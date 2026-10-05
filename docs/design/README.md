@@ -29,6 +29,15 @@ Reference: [Split view](split-view.png).
 - Center learner preview inside a tall white phone-shaped frame with thick dark rounded outline. Device frame belongs to preview chrome, not learner content.
 - Preview content starts near top of device, with inner padding and substantial unused space below short exercises.
 
+### Demo right-pane modes (product decision)
+
+This behavior extends screenshot reference; it is not shown in screenshot.
+
+- Right-pane switch offers `Vorschau` and `Zusammenarbeit`; preview is default.
+- Collaboration mode shows editable Editor 2 in same pane, synchronized with left editor, including collaborative cursors. It has no phone frame or preview reset control.
+- Switching modes preserves both editors and learner response state. Preview reset remains exclusive to preview mode and does not change authored content.
+- Switch exposes active mode and supports keyboard operation. Only selected pane content is visible and focusable.
+
 ### Authoring example: single choice
 
 - Muted indigo `Single Choice` label and help icon precede form.

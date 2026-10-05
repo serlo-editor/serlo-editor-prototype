@@ -7,12 +7,12 @@ export async function loadPrototype(page: Page, { collaboration = true } = {}) {
   // Wait for the editor to load
   await page.waitForSelector(".ProseMirror")
   if (collaboration) {
-    await page.getByText("Zusammenarbeit testen", { exact: true }).click()
+    await page.getByRole("button", { name: "Zusammenarbeit", exact: true }).click()
   }
 }
 
 export function editor(page: Page, editorName: EditorName) {
-  return page.getByLabel(editorName)
+  return page.getByRole("form", { name: editorName, exact: true })
 }
 
 export function toolbarButton(page: Page, editorName: EditorName, buttonName: string) {
@@ -46,6 +46,11 @@ export async function selectTextInEditor(page: Page, editorName: EditorName, sel
     if (root == null) {
       throw new Error("Expected an editable root element")
     }
+
+    // Let focus-driven editor/store updates settle before changing DOM selection.
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+    })
 
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
     let current = walker.nextNode()
