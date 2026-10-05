@@ -1,15 +1,21 @@
 import { expect, type Page } from "playwright/test"
 type EditorName = "Editor 1" | "Editor 2"
 
-export async function loadPrototype(page: Page) {
+export async function loadPrototype(page: Page, { collaboration = true } = {}) {
   await page.goto("http://localhost:3000")
 
-  // Wait for the editor to load
-  await page.waitForSelector(".ProseMirror")
+  await expect(editor(page, "Editor 1").locator(".ProseMirror").first()).toBeVisible()
+  if (collaboration) {
+    await page
+      .locator(".app__header")
+      .getByRole("button", { name: "Zusammenarbeit", exact: true })
+      .click()
+    await expect(editor(page, "Editor 2").locator(".ProseMirror").first()).toBeVisible()
+  }
 }
 
 export function editor(page: Page, editorName: EditorName) {
-  return page.getByLabel(editorName)
+  return page.getByRole("form", { name: editorName, exact: true })
 }
 
 export function toolbarButton(page: Page, editorName: EditorName, buttonName: string) {
@@ -43,6 +49,11 @@ export async function selectTextInEditor(page: Page, editorName: EditorName, sel
     if (root == null) {
       throw new Error("Expected an editable root element")
     }
+
+    // Let focus-driven editor/store updates settle before changing DOM selection.
+    await new Promise<void>((resolve) => {
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+    })
 
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
     let current = walker.nextNode()
