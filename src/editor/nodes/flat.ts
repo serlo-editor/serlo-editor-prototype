@@ -1,12 +1,11 @@
-import { invariant } from 'es-toolkit'
-import * as S from '../schema'
-import type { EditorStore } from '../store/editor-store'
-import type { Key } from '../store/key'
-import type { TypeGuard } from '../utils/type-guards'
+import { invariant } from "es-toolkit"
 
-export type FlatNode<S extends S.Schema = S.Schema> = S extends unknown
-  ? _FlatNode<S>
-  : never
+import * as S from "../schema"
+import type { EditorStore } from "../store/editor-store"
+import type { Key } from "../store/key"
+import type { TypeGuard } from "../utils/type-guards"
+
+export type FlatNode<S extends S.Schema = S.Schema> = S extends unknown ? _FlatNode<S> : never
 
 interface _FlatNode<S extends S.Schema> {
   schema: S
@@ -35,16 +34,11 @@ export function getVisibleChildren({
   if (isArray(node)) {
     return node.value.toArray().map((itemKey) => store.get(itemKey))
   } else {
-    return node.schema.keyOrder.map((propertyName) =>
-      getProperty({ store, node, propertyName }),
-    )
+    return node.schema.keyOrder.map((propertyName) => getProperty({ store, node, propertyName }))
   }
 }
 
-export function getProperty<
-  P extends Record<string, S.Schema>,
-  K extends keyof P & string,
->({
+export function getProperty<P extends Record<string, S.Schema>, K extends keyof P & string>({
   store,
   node,
   propertyName,
@@ -55,10 +49,7 @@ export function getProperty<
 }): FlatNode<P[K]> {
   const propertyKey = node.value.get(propertyName)
 
-  invariant(
-    propertyKey !== undefined,
-    `Property ${propertyName} is missing in node ${node.key}`,
-  )
+  invariant(propertyKey !== undefined, `Property ${propertyName} is missing in node ${node.key}`)
 
   return store.get(propertyKey) as FlatNode<P[K]>
 }

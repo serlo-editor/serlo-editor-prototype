@@ -1,19 +1,14 @@
-import * as S from '../schema'
-import type { TypeGuard } from '../utils/type-guards'
+import * as S from "../schema"
+import type { TypeGuard } from "../utils/type-guards"
 
-export type NestedNode<S extends S.Schema = S.Schema> = S extends unknown
-  ? _NestedNode<S>
-  : never
+export type NestedNode<S extends S.Schema = S.Schema> = S extends unknown ? _NestedNode<S> : never
 
 interface _NestedNode<S extends S.Schema> {
   schema: S
   value: S.JSONValue<S>
 }
 
-export function getSingletonChild({
-  schema,
-  value,
-}: NestedNode<S.WrapperSchema | S.UnionSchema>) {
+export function getSingletonChild({ schema, value }: NestedNode<S.WrapperSchema | S.UnionSchema>) {
   if (S.isWrapper(schema)) {
     return { schema: schema.wrappedSchema, value: schema.unwrap(value) }
   } else {
@@ -27,13 +22,11 @@ export function getItems({ schema, value }: NestedNode<S.ArraySchema>) {
   })
 }
 
-export function getProperty<
-  P extends Record<string, S.Schema>,
-  K extends keyof P,
->({ schema, value }: NestedNode<S.ObjectSchema<P>>, key: K): NestedNode<P[K]> {
-  return { schema: schema.properties[key], value: value[key] } as NestedNode<
-    P[K]
-  >
+export function getProperty<P extends Record<string, S.Schema>, K extends keyof P>(
+  { schema, value }: NestedNode<S.ObjectSchema<P>>,
+  key: K,
+): NestedNode<P[K]> {
+  return { schema: schema.properties[key], value: value[key] } as NestedNode<P[K]>
 }
 
 export const isBoolean = createGuard(S.isBoolean)

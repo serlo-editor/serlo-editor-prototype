@@ -10,20 +10,21 @@ import {
   type NodeJSON,
   toggleMark,
   union,
-} from 'prosekit/core'
-import { defineBold } from 'prosekit/extensions/bold'
-import { defineHeading } from 'prosekit/extensions/heading'
-import { defineItalic } from 'prosekit/extensions/italic'
-import { defineList } from 'prosekit/extensions/list'
-import { defineParagraph } from 'prosekit/extensions/paragraph'
-import { defineText } from 'prosekit/extensions/text'
-import { type Awareness, defineYjs } from 'prosekit/extensions/yjs'
-import { prosemirrorJSONToYXmlFragment } from 'y-prosemirror'
-import type { RichTextSchema } from '../schema'
-import type { EditorStore } from '../store/editor-store'
-import type { Key } from '../store/key'
-import { createProxyWithChangedMethods } from '../utils/proxy'
-import { isInline, RichTextFeature } from './types'
+} from "prosekit/core"
+import { defineBold } from "prosekit/extensions/bold"
+import { defineHeading } from "prosekit/extensions/heading"
+import { defineItalic } from "prosekit/extensions/italic"
+import { defineList } from "prosekit/extensions/list"
+import { defineParagraph } from "prosekit/extensions/paragraph"
+import { defineText } from "prosekit/extensions/text"
+import { type Awareness, defineYjs } from "prosekit/extensions/yjs"
+import { prosemirrorJSONToYXmlFragment } from "y-prosemirror"
+
+import type { RichTextSchema } from "../schema"
+import type { EditorStore } from "../store/editor-store"
+import type { Key } from "../store/key"
+import { createProxyWithChangedMethods } from "../utils/proxy"
+import { isInline, RichTextFeature } from "./types"
 
 export function createRichTextEditor({
   key,
@@ -65,10 +66,7 @@ export function createRichTextEditor({
   return editor
 }
 
-function createEditorSpecificAwareness(
-  editorId: Key,
-  awareness: Awareness,
-): Awareness {
+function createEditorSpecificAwareness(editorId: Key, awareness: Awareness): Awareness {
   return createProxyWithChangedMethods(awareness, {
     getStates() {
       const result = new Map()
@@ -98,44 +96,41 @@ function createEditorSpecificAwareness(
   })
 }
 
-function hasEditorId(
-  state: object | null,
-  editorId: Key,
-): state is { editorId: Key } {
-  return state != null && 'editorId' in state && state.editorId === editorId
+function hasEditorId(state: object | null, editorId: Key): state is { editorId: Key } {
+  return state != null && "editorId" in state && state.editorId === editorId
 }
 
 function defineDoc(isInline: boolean): Extension {
-  const content = isInline ? 'inlineBlock' : 'block+'
+  const content = isInline ? "inlineBlock" : "block+"
 
-  return defineNodeSpec({ name: 'doc', content, topNode: true })
+  return defineNodeSpec({ name: "doc", content, topNode: true })
 }
 
 function defineGap(): Extension {
   return union(
     defineMarkSpec({
-      name: 'gap',
+      name: "gap",
       parseDOM: [{ tag: 'span[data-gap="true"]' }],
       toDOM() {
-        return ['span', { class: 'gap-mark', 'data-gap': 'true' }, 0]
+        return ["span", { class: "gap-mark", "data-gap": "true" }, 0]
       },
     }),
     defineCommands({
-      toggleGap: () => toggleMark({ type: 'gap' }),
+      toggleGap: () => toggleMark({ type: "gap" }),
     }),
     defineKeymap({
-      'Mod-Alt-g': toggleMark({ type: 'gap' }),
+      "Mod-Alt-g": toggleMark({ type: "gap" }),
     }),
   )
 }
 
 function defineInlineBlockNode() {
   return defineNodeSpec({
-    name: 'inlineBlock',
-    content: 'inline*',
-    group: 'block',
+    name: "inlineBlock",
+    content: "inline*",
+    group: "block",
     toDOM() {
-      return ['span', { class: 'inline-rich-text' }, 0]
+      return ["span", { class: "inline-rich-text" }, 0]
     },
   })
 }

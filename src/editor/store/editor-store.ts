@@ -1,14 +1,15 @@
-import { invariant } from 'es-toolkit'
-import type { Editor } from 'prosekit/core'
-import type * as Y from 'yjs'
-import type { CDRT } from '../cdrt/types'
-import { Root } from '../content'
-import type { FlatNode } from '../nodes/flat'
-import { createRichTextEditor } from '../rich-text/create-editor'
-import type { FlatValue, RichTextSchema, Schema } from '../schema'
-import { collectSchemas } from '../schema/collect-schemas'
-import type { EditorSelection } from '../selection/types'
-import { CollaborativeKeyGenerator, type Key, type KeyGenerator } from './key'
+import { invariant } from "es-toolkit"
+import type { Editor } from "prosekit/core"
+import type * as Y from "yjs"
+
+import type { CDRT } from "../cdrt/types"
+import { Root } from "../content"
+import type { FlatNode } from "../nodes/flat"
+import { createRichTextEditor } from "../rich-text/create-editor"
+import type { FlatValue, RichTextSchema, Schema } from "../schema"
+import { collectSchemas } from "../schema/collect-schemas"
+import type { EditorSelection } from "../selection/types"
+import { CollaborativeKeyGenerator, type Key, type KeyGenerator } from "./key"
 
 export class EditorStore {
   private schemaNames: Y.Map<string>
@@ -26,19 +27,18 @@ export class EditorStore {
     public readonly cdrt: CDRT,
     keyGenerator?: KeyGenerator,
   ) {
-    this.schemaNames = this.cdrt.doc.getMap('schemaNames')
-    this.parentKeys = this.cdrt.doc.getMap('parentKeys')
-    this.values = this.cdrt.doc.getMap('values')
-    this.metadata = this.cdrt.doc.getMap('metadata')
+    this.schemaNames = this.cdrt.doc.getMap("schemaNames")
+    this.parentKeys = this.cdrt.doc.getMap("parentKeys")
+    this.values = this.cdrt.doc.getMap("values")
+    this.metadata = this.cdrt.doc.getMap("metadata")
     this.keyGenerator =
-      keyGenerator ??
-      new CollaborativeKeyGenerator(String(this.cdrt.doc.clientID))
+      keyGenerator ?? new CollaborativeKeyGenerator(String(this.cdrt.doc.clientID))
   }
 
   addUpdateListener(listener: () => void) {
-    this.cdrt.doc.on('update', listener)
+    this.cdrt.doc.on("update", listener)
 
-    return () => this.cdrt.doc.off('update', listener)
+    return () => this.cdrt.doc.off("update", listener)
   }
 
   get(key: Key): FlatNode {
@@ -48,10 +48,7 @@ export class EditorStore {
 
     invariant(schemaName != null, `Node with key ${key} does not have a schema`)
     invariant(value !== undefined, `Node with key ${key} does not have a value`)
-    invariant(
-      parentKey !== undefined,
-      `Node with key ${key} does not have a parent key`,
-    )
+    invariant(parentKey !== undefined, `Node with key ${key} does not have a parent key`)
 
     const schema = this.schemaRegistry[schemaName]
 
@@ -87,10 +84,7 @@ export class EditorStore {
   }
 
   getEntries(): [Key, FlatNode][] {
-    return [...this.values.keys()].map((key) => [
-      key as Key,
-      this.get(key as Key),
-    ])
+    return [...this.values.keys()].map((key) => [key as Key, this.get(key as Key)])
   }
 
   get selection(): EditorSelection | null {
@@ -98,7 +92,7 @@ export class EditorStore {
   }
 
   get updateCount(): number {
-    return this.metadata.get('updateCount') ?? 0
+    return this.metadata.get("updateCount") ?? 0
   }
 
   update<A>(updater: (tx: Transaction) => A): A {
@@ -115,7 +109,7 @@ export class EditorStore {
           this.incrementUpdateCount()
           this.currentTransaction = null
         }
-      }, 'editor-store-update')
+      }, "editor-store-update")
     }
   }
 
@@ -135,10 +129,7 @@ export class EditorStore {
         return key
       },
       update: (key, updateValue) => {
-        invariant(
-          this.has(key),
-          `Cannot update non-existent node with key ${key}`,
-        )
+        invariant(this.has(key), `Cannot update non-existent node with key ${key}`)
 
         const newValue = updateValue(this.values.get(key))
 
@@ -161,29 +152,18 @@ export class EditorStore {
   }
 
   private incrementUpdateCount(): void {
-    this.metadata.set('updateCount', this.updateCount + 1)
+    this.metadata.set("updateCount", this.updateCount + 1)
   }
 }
 
-function createSchemaRegistry(
-  rootSchema: Root,
-): Record<string, Schema | undefined> {
-  return Object.fromEntries(
-    collectSchemas(rootSchema).map((schema) => [schema.name, schema]),
-  )
+function createSchemaRegistry(rootSchema: Root): Record<string, Schema | undefined> {
+  return Object.fromEntries(collectSchemas(rootSchema).map((schema) => [schema.name, schema]))
 }
 
 export interface Transaction {
   attachRoot(rootKey: Key, value: FlatValue<Root>): Key
-  insert<S extends Schema>(
-    schema: S,
-    parentKey: Key,
-    createValue: (key: Key) => FlatValue<S>,
-  ): Key
-  update<S extends Schema>(
-    key: Key,
-    updateValue: (value: FlatValue<S>) => FlatValue<S>,
-  ): void
+  insert<S extends Schema>(schema: S, parentKey: Key, createValue: (key: Key) => FlatValue<S>): Key
+  update<S extends Schema>(key: Key, updateValue: (value: FlatValue<S>) => FlatValue<S>): void
   setEditor(key: Key, editor: Editor): void
   setSelection(selection: EditorSelection | null): void
   store: EditorStore

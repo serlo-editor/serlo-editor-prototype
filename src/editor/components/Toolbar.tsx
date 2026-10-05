@@ -1,35 +1,36 @@
-import clsx from 'clsx'
-import { type CommandAction, type Editor, isMarkActive } from 'prosekit/core'
-import * as F from '../nodes/flat'
-import type { EditorStore } from '../store/editor-store'
+import clsx from "clsx"
+import { type CommandAction, type Editor, isMarkActive } from "prosekit/core"
+
+import * as F from "../nodes/flat"
+import type { EditorStore } from "../store/editor-store"
 
 export function Toolbar({ store }: { store: EditorStore }) {
   const editor = getFocusedEditor(store)
-  const canToggleGap = canExecCommand(editor, 'toggleGap')
+  const canToggleGap = canExecCommand(editor, "toggleGap")
 
   return (
     <div className="toolbar" role="toolbar" aria-label="Formatting controls">
       <ToolbarButton
         label="Toggle Bold"
         shortLabel="B"
-        isActive={isMarkActiveInEditor(editor, 'bold')}
-        canExec={canExecCommand(editor, 'toggleBold')}
-        onClick={() => execCommand(editor, 'toggleBold')}
+        isActive={isMarkActiveInEditor(editor, "bold")}
+        canExec={canExecCommand(editor, "toggleBold")}
+        onClick={() => execCommand(editor, "toggleBold")}
       />
       <ToolbarButton
         label="Italic"
         shortLabel="I"
-        isActive={isMarkActiveInEditor(editor, 'italic')}
-        canExec={canExecCommand(editor, 'toggleItalic')}
-        onClick={() => execCommand(editor, 'toggleItalic')}
+        isActive={isMarkActiveInEditor(editor, "italic")}
+        canExec={canExecCommand(editor, "toggleItalic")}
+        onClick={() => execCommand(editor, "toggleItalic")}
       />
       {canToggleGap ? (
         <ToolbarButton
           label="Gap"
           shortLabel="Gap"
-          isActive={isMarkActiveInEditor(editor, 'gap')}
+          isActive={isMarkActiveInEditor(editor, "gap")}
           canExec={canToggleGap}
-          onClick={() => execCommand(editor, 'toggleGap')}
+          onClick={() => execCommand(editor, "toggleGap")}
         />
       ) : null}
     </div>
@@ -60,9 +61,9 @@ function ToolbarButton({
   onClick: () => void
 }) {
   const className = clsx(
-    'toolbar__button',
-    canExec ? 'toolbar__button--enabled' : 'toolbar__button--disabled',
-    isActive ? 'toolbar__button--active' : 'toolbar__button--idle',
+    "toolbar__button",
+    canExec ? "toolbar__button--enabled" : "toolbar__button--disabled",
+    isActive ? "toolbar__button--active" : "toolbar__button--idle",
   )
 
   return (
@@ -80,10 +81,7 @@ function ToolbarButton({
   )
 }
 
-function isMarkActiveInEditor(
-  editor: Editor | null,
-  markName: string,
-): boolean {
+function isMarkActiveInEditor(editor: Editor | null, markName: string): boolean {
   if (editor == null) return false
   if (!(markName in editor.schema.marks)) return false
 
@@ -111,5 +109,5 @@ function canExecCommand(editor: Editor | null, commandName: string): boolean {
 function getCommand(editor: Editor, commandName: string): CommandAction | null {
   const command = editor.commands[commandName]
 
-  return typeof command === 'function' ? command : null
+  return typeof command === "function" ? command : null
 }

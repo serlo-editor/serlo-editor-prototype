@@ -1,7 +1,8 @@
-import { yXmlFragmentToProseMirrorRootNode } from 'y-prosemirror'
-import * as F from '../nodes/flat'
-import type { JSONValue, Schema } from '../schema'
-import type { EditorStore } from '../store/editor-store'
+import { yXmlFragmentToProseMirrorRootNode } from "y-prosemirror"
+
+import * as F from "../nodes/flat"
+import type { JSONValue, Schema } from "../schema"
+import type { EditorStore } from "../store/editor-store"
 
 export function load<S extends Schema>({
   store,
@@ -22,9 +23,7 @@ export function load<S extends Schema>({
   } else if (F.isUnion(node)) {
     return load({ store, node: store.get(node.value) })
   } else if (F.isArray(node)) {
-    return node.value
-      .toArray()
-      .map((childKey) => load({ store, node: store.get(childKey) }))
+    return node.value.toArray().map((childKey) => load({ store, node: store.get(childKey) }))
   } else if (F.isObject(node)) {
     return Object.fromEntries(
       [...node.value.entries()].map(([key, childKey]) => [

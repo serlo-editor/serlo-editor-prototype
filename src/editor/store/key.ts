@@ -1,7 +1,7 @@
-import type { Branded } from '../utils/branded'
-import { isString, type TypeGuard } from '../utils/type-guards'
+import type { Branded } from "../utils/branded"
+import { isString, type TypeGuard } from "../utils/type-guards"
 
-export type Key = Branded<string, 'Key'>
+export type Key = Branded<string, "Key">
 
 export const isKey = isString as TypeGuard<Key>
 

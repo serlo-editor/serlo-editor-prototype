@@ -1,17 +1,17 @@
-import { ContentType, type JSONValue, type Root } from '../editor'
+import { ContentType, type JSONValue, type Root } from "../editor"
 
 export const initialContent: JSONValue<Root> = [
   {
     type: ContentType.Text,
     content: {
-      type: 'doc',
+      type: "doc",
       content: [
         {
-          type: 'paragraph',
+          type: "paragraph",
           content: [
             {
-              type: 'text',
-              text: 'This is an example of educational content with various types of items.',
+              type: "text",
+              text: "This is an example of educational content with various types of items.",
             },
           ],
         },
@@ -21,14 +21,14 @@ export const initialContent: JSONValue<Root> = [
   {
     type: ContentType.FillInTheBlank,
     content: {
-      type: 'doc',
+      type: "doc",
       content: [
         {
-          type: 'paragraph',
+          type: "paragraph",
           content: [
-            { type: 'text', text: 'The capital of France is ' },
-            { type: 'text', text: 'Paris', marks: [{ type: 'gap' }] },
-            { type: 'text', text: '.' },
+            { type: "text", text: "The capital of France is " },
+            { type: "text", text: "Paris", marks: [{ type: "gap" }] },
+            { type: "text", text: "." },
           ],
         },
       ],
@@ -37,11 +37,11 @@ export const initialContent: JSONValue<Root> = [
   {
     type: ContentType.MultipleChoice,
     question: {
-      type: 'doc',
+      type: "doc",
       content: [
         {
-          type: 'inlineBlock',
-          content: [{ type: 'text', text: 'What is 2 + 2?' }],
+          type: "inlineBlock",
+          content: [{ type: "text", text: "What is 2 + 2?" }],
         },
       ],
     },
@@ -49,28 +49,22 @@ export const initialContent: JSONValue<Root> = [
       {
         isCorrect: false,
         text: {
-          type: 'doc',
-          content: [
-            { type: 'inlineBlock', content: [{ type: 'text', text: '3' }] },
-          ],
+          type: "doc",
+          content: [{ type: "inlineBlock", content: [{ type: "text", text: "3" }] }],
         },
       },
       {
         isCorrect: true,
         text: {
-          type: 'doc',
-          content: [
-            { type: 'inlineBlock', content: [{ type: 'text', text: '4' }] },
-          ],
+          type: "doc",
+          content: [{ type: "inlineBlock", content: [{ type: "text", text: "4" }] }],
         },
       },
       {
         isCorrect: false,
         text: {
-          type: 'doc',
-          content: [
-            { type: 'inlineBlock', content: [{ type: 'text', text: '5' }] },
-          ],
+          type: "doc",
+          content: [{ type: "inlineBlock", content: [{ type: "text", text: "5" }] }],
         },
       },
     ],

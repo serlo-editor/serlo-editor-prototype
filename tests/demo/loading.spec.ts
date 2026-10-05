@@ -1,10 +1,9 @@
-import { expect, test } from '@playwright/test'
-import { loadPrototype } from './utils'
+import { expect, test } from "@playwright/test"
 
-test('Editor prototype should load', async ({ page }) => {
+import { loadPrototype } from "./utils"
+
+test("Editor prototype should load", async ({ page }) => {
   await loadPrototype(page)
 
-  await expect(
-    page.getByLabel('Editor 1').getByText(/This is an example/),
-  ).toBeVisible()
+  await expect(page.getByLabel("Editor 1").getByText(/This is an example/)).toBeVisible()
 })

@@ -1,4 +1,4 @@
-import * as S from './index'
+import * as S from "./index"
 
 export function collectSchemas(schema: S.Schema): S.Schema[] {
   const collected = new Set<S.Schema>()

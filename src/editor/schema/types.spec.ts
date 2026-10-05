@@ -1,8 +1,9 @@
-import { expectTypeOf, test } from 'bun:test'
-import type { FlatValue, JSONValue, Schema } from './types'
+import { expectTypeOf, test } from "bun:test"
+
+import type { FlatValue, JSONValue, Schema } from "./types"
 
 type ExampleSchema = Schema<{
-  kind: 'example'
+  kind: "example"
   FlatValue: number
   JSONValue: { text: string }
 }>
